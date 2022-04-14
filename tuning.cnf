@@ -1,0 +1,40 @@
+[mysqld]
+tmp_table_size                = 512M      # Use o mesmo valor que max_heap_table_size
+max_heap_table_size           = 512M      # Aumente para 256M ou 512M se você tiver muitas tabelas temporárias devido à falta de índices em JOINs
+innodb_log_buffer_size        = 8M
+max_allowed_packet            = 16M
+sort_buffer_size              = 2M
+read_buffer_size              = 256K
+read_rnd_buffer_size          = 512K
+thread_stack                  = 196K
+thread_cache_size             = 8
+open_files_limit              = 65536
+query_cache_size              = 0
+query_cache_type              = 0
+query_cache_limit             = 16M
+join_buffer_size              = 3096K
+innodb_buffer_pool_size       = 16G       # Usa até 70-80% de RAM
+innodb_buffer_pool_instances  = 16        # Use 1 instância por 1 GB de tamanho do pool InnoDB - o máximo é 64
+innodb_buffer_pool_chunk_size = 1G
+#innodb_sort_buffer_size       = 4M        # UPD - Define quantos dados são lidos na memória para operações de classificação antes de gravar no disco (o padrão é 1M / max é 64M)
+innodb_log_file_size          = 2G
+key_buffer_size               = 2048M
+table_open_cache              = 3500     # UPD
+table_definition_cache        = 3500     # UPD
+open_files_limit              = 7000     # UPD - Isso pode ser 2x a 3x o valor table_open_cache ou corresponder ao valor do sistema
+skip-name-resolve
+
+# === Error & Slow Query Logging ===
+log_error = /var/lib/mysql/mysql_error.log
+log_queries_not_using_indexes = 0 # Disabled on production
+long_query_time = 5
+slow_query_log = 0 # Disabled on production
+slow_query_log_file = /var/lib/mysql/mysql_slow.log
+
+[mysqldump]
+# Referência de variável
+# Para MySQL 5.7+: https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html
+# Para MariaDB: https://mariadb.com/kb/en/library/mysqldump/
+quick
+quote_names
+max_allowed_packet = 1024M
